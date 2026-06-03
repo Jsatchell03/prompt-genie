@@ -13,7 +13,7 @@ export default function NavButton({ screen, active }) {
     >
       <h3
         className={
-          "hover:text-primary-highlight-variant" +
+          " subheading-variant hover:text-primary-highlight-variant" +
           (active ? " text-primary-highlight" : " text-neutral-text")
         }
       >

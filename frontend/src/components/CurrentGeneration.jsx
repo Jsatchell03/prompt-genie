@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PromptArena from "./PromptArena";
-import PromptConfig from "./PromptConfig";
+import GenerationConfig from "./GenerationConfig";
 export default function CurrentGeneration() {
   const [configOpen, setConfigOpen] = useState(true);
   return (
@@ -11,7 +11,7 @@ export default function CurrentGeneration() {
           (configOpen ? " border-r-1 border-r-outline" : " col-span-2")
         }
       />
-      {configOpen && <PromptConfig setConfigOpen={setConfigOpen} />}
+      {configOpen && <GenerationConfig setConfigOpen={setConfigOpen} />}
     </>
   );
 }

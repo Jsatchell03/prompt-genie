@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #7c3aed;
+    --color-primary: #7b3aec;
     --color-primary-highlight: #d2bbff;
     --color-primary-highlight-variant: #d2bbff;
     --color-on-surface: #e8dfee;
@@ -18,7 +18,7 @@
 
 @layer components {
   .heading-primary {
-    @apply text-3xl font-bold text-primary;
+    @apply text-3xl font-bold text-primary-highlight;
   }
 
   .heading-secondary {
@@ -26,6 +26,42 @@
   }
 
   .subheading{
-    @apply text-lg font-semibold text-neutral-text;
+    @apply text-base font-semibold text-neutral-text;
   }
+
+  .subheading-variant{
+    @apply text-base text-neutral-text;
+  }
+  
+  .paragraph-primary{
+    @apply text-sm text-neutral-text;
+  }
+}
+
+
+/* Scrollbar */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
