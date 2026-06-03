@@ -3,7 +3,7 @@ import React from "react";
 export default function PromptArena({ style }) {
   return (
     <div className={style}>
-      <p>Prompt Arena</p>
+      <h2 className="heading-secondary">Prompt Comparison</h2>
     </div>
   );
 }

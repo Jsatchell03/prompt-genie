@@ -6,7 +6,7 @@ import { useScreen } from "../context/ScreenContext";
 export default function Navbar({ style }) {
   const { currScreen } = useScreen();
   return (
-    <div className={style + " " + "flex items-center"}>
+    <div className={style + " bg-surface-low " + "flex items-center"}>
       {Object.keys(SCREENS).map((screen, index) => (
         <NavButton
           screen={SCREENS[screen]}
