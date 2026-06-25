@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LongInput from "./LongInput";
 import SearchableDropdown from "./SearchableDropdown";
 
-export default function GenerationConfig({ setConfigOpen }) {
+export default function GenerationConfig() {
   const [goal, setGoal] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
   const [model, setModel] = useState("");
@@ -37,9 +37,7 @@ export default function GenerationConfig({ setConfigOpen }) {
     console.log(config);
   }
   return (
-    <div className="bg-surface-high h-[calc(100vh-64px)] flex flex-col pb-2 min-h-0">
-      <h2 className="heading-secondary m-2">Configuration</h2>
-
+    <div className="flex flex-col flex-1 pb-2 min-h-0">
       <div className="m-2 pb-2 h-full overflow-y-auto">
         <div className="border-1 border-outline bg-surface-base p-2 pb-4 rounded-lg mb-2">
           <h3 className="subheading mb-2">Model</h3>
