@@ -3,10 +3,10 @@ import SCREENS from "../Constants";
 import NavButton from "./NavButton";
 import { useScreen } from "../context/ScreenContext";
 
-export default function Navbar({ style }) {
+export default function Navbar() {
   const { currScreen } = useScreen();
   return (
-    <div className={style + " bg-surface-low " + "flex items-center"}>
+    <div className="col-span-2 bg-surface-base border-b-1 border-outline flex items-center">
       {Object.keys(SCREENS).map((screen, index) => (
         <NavButton
           screen={SCREENS[screen]}

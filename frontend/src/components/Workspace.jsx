@@ -7,11 +7,15 @@ import { useScreen } from "../context/ScreenContext";
 
 export default function Workspace() {
   const { currScreen } = useScreen();
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
+  const togglePanel = () => setIsPanelOpen((prev) => !prev);
   return (
-    <div className="grid grid-rows-[64px_1fr] grid-cols-[1fr_350px] h-full">
-      <Navbar style="col-span-2 border-b-1 border-b-outline" />
+    <div
+      className={`grid grid-rows-[64px_1fr] h-full ${isPanelOpen ? "grid-cols-[1fr_350px]" : "grid-cols-[1fr_48px]"}`}
+    >
+      <Navbar />
       {currScreen == SCREENS.CURRENT_GENERATION ? (
-        <CurrentGeneration />
+        <CurrentGeneration isPanelOpen={isPanelOpen} togglePanel={togglePanel} />
       ) : (
         <EvolutionGraph />
       )}

@@ -1,66 +1,149 @@
 import React, { useState } from "react";
 import LongInput from "./LongInput";
 import SearchableDropdown from "./SearchableDropdown";
+import OutputPreferences from "./OutputPreferences";
+
+const LLMModels = [
+  // OpenAI
+  "GPT-5",
+  "GPT-5 Mini",
+  "GPT-5 Nano",
+  "GPT-4.1",
+  "GPT-4.1 Mini",
+  "GPT-4.1 Nano",
+  "o3",
+  "o3 Pro",
+  "o4-mini",
+
+  // Anthropic
+  "Claude Opus 4",
+  "Claude Sonnet 4",
+  "Claude Haiku 4",
+
+  // Google
+  "Gemini 2.5 Pro",
+  "Gemini 2.5 Flash",
+  "Gemini 2.5 Flash-Lite",
+
+  // Meta
+  "Llama 4 Maverick",
+  "Llama 4 Scout",
+  "Llama 3.3 70B",
+  "Llama 3.1 405B",
+  "Llama 3.1 70B",
+  "Llama 3.1 8B",
+
+  // Mistral AI
+  "Magistral",
+  "Mistral Large",
+  "Mistral Medium",
+  "Mistral Small",
+  "Codestral",
+  "Pixtral Large",
+
+  // xAI
+  "Grok 4",
+  "Grok 3",
+
+  // DeepSeek
+  "DeepSeek R1",
+  "DeepSeek V3",
+
+  // Alibaba
+  "Qwen3 235B",
+  "Qwen3 32B",
+  "Qwen3 14B",
+  "Qwen3 8B",
+
+  // Cohere
+  "Command A",
+  "Command R+",
+  "Command R",
+
+  // AI21
+  "Jamba Large",
+  "Jamba Mini",
+
+  // Microsoft
+  "Phi-4",
+  "Phi-4 Mini",
+
+  // Amazon
+  "Nova Premier",
+  "Nova Pro",
+  "Nova Lite",
+  "Nova Micro",
+
+  // IBM
+  "Granite 4.0",
+
+  // Moonshot AI
+  "Kimi K2",
+
+  // Tencent
+  "Hunyuan Turbo S",
+
+  // Zhipu AI
+  "GLM-4.5",
+
+  // 01.AI
+  "Yi Large",
+];
 
 export default function GenerationConfig() {
   const [goal, setGoal] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
   const [model, setModel] = useState("");
+  const [preferences, setPreferences] = useState([]);
 
   const [config, setConfig] = useState({
     model: "",
     goal: "",
     userPrompt: "",
+    preferences: [],
   });
 
   function handleRunEvolution() {
-    setConfig({
-      model,
-      goal,
-      userPrompt,
-    });
+    setConfig({ model, goal, userPrompt, preferences });
   }
 
   function handleRegen() {
-    setConfig({
-      model,
-      goal,
-      userPrompt,
-    });
+    setConfig({ model, goal, userPrompt, preferences });
   }
-  if (
+
+  const isDirty =
     goal !== config.goal ||
     userPrompt !== config.userPrompt ||
-    model !== config.model
-  ) {
-    console.log(model);
-    console.log(config);
-  }
+    model !== config.model ||
+    JSON.stringify(preferences) !== JSON.stringify(config.preferences);
+
   return (
-    <div className="flex flex-col flex-1 pb-2 min-h-0">
+    <div className="bg-surface-high flex flex-col flex-1 pb-2 min-h-0 mt-2 ">
       <div className="m-2 pb-2 h-full overflow-y-auto">
-        <div className="border-1 border-outline bg-surface-base p-2 pb-4 rounded-lg mb-2">
+        <div className="bg-surface-base p-2 pb-4 rounded-lg mb-2">
           <h3 className="subheading mb-2">Model</h3>
           <SearchableDropdown
             value={model}
-            options={["GPT-5", "GPT-5 Mini", "Claude Sonnet"]}
+            options={LLMModels}
             onChange={setModel}
+            bgColor="bg-surface-highest"
           />
         </div>
+
         <div className="border-1 border-outline bg-surface-base p-2 pb-4 rounded-lg mb-2">
           <h3 className="subheading mb-2">Goal</h3>
           <LongInput value={goal} onChange={setGoal} />
         </div>
+
         <div className="border-1 border-outline bg-surface-base p-2 pb-4 rounded-lg mb-2">
           <h3 className="subheading mb-2">User Prompt</h3>
           <LongInput value={userPrompt} onChange={setUserPrompt} />
         </div>
-        <h3 className="subheading">Preferences</h3>
+
+        <OutputPreferences value={preferences} onChange={setPreferences} />
       </div>
 
-      {(goal !== config.goal ||
-        userPrompt !== config.userPrompt ||
-        model !== config.model) && (
+      {isDirty && (
         <div className="flex-1 flex w-full">
           <div
             onClick={handleRunEvolution}
