@@ -40,7 +40,7 @@ export default function OutputPreferences({ value, onChange }) {
       className="border-1 border-outline bg-surface-base p-2 pb-4 rounded-lg"
     >
       <div className="flex justify-between items-center mb-2">
-        <h3 className="subheading">Output Preferences</h3>
+        <h3 className="subheading">Locked Preferences</h3>
         <button
           onClick={() => setShowAddPreference((v) => !v)}
           className="text-primary hover:text-primary-highlight text-xl leading-none px-1"
@@ -57,6 +57,7 @@ export default function OutputPreferences({ value, onChange }) {
             options={PREFERENCE_OPTIONS.filter((opt) => !value.includes(opt))}
             onChange={addPreference}
             placeholder="Search or type a preference..."
+            bgColor="bg-surface-highest"
           />
         </div>
       )}

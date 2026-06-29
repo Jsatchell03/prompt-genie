@@ -1,8 +1,17 @@
 import React, { useState } from "react";
+import { CHIP_COLORS } from "../Constants";
+
+function chipColorIndex(str) {
+  let h = 0;
+  for (const c of str) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  return h % CHIP_COLORS.length;
+}
 
 const MOCK_PROMPTS = [
   {
     id: "P-181",
+    model: "claude-opus-4-8",
+    preferences: ["Concise Outputs", "Avoid Jargon"],
     systemPrompt:
       "You are a helpful assistant specializing in technical writing. Your goal is to produce clear, concise, and accurate documentation. Always use active voice, avoid jargon unless necessary, and structure responses with headers when appropriate. When given code examples, explain them line by line.",
     tokenCount: 240,
@@ -12,6 +21,8 @@ const MOCK_PROMPTS = [
   },
   {
     id: "P-182",
+    model: "gpt-4o",
+    preferences: ["Be Direct", "Technical Detail", "Use Code"],
     systemPrompt:
       "You are an expert assistant with deep knowledge across software engineering, product design, and business strategy. Approach every question with first-principles reasoning. Be direct and opinionated — avoid hedging. When you don't know something, say so explicitly rather than guessing. Tailor your response length to the complexity of the question.",
     tokenCount: 310,
@@ -21,6 +32,8 @@ const MOCK_PROMPTS = [
   },
   {
     id: "P-183",
+    model: "gemini-2.5-pro",
+    preferences: ["Friendly Tone", "Concise Outputs"],
     systemPrompt:
       "You are a concise and empathetic customer support assistant. Your primary goal is to resolve issues quickly and leave users feeling heard. Respond in a friendly, professional tone. Always acknowledge the user's frustration before offering a solution. Limit your response to 3–4 sentences unless more detail is explicitly requested.",
     tokenCount: 198,
@@ -30,6 +43,8 @@ const MOCK_PROMPTS = [
   },
   {
     id: "P-184",
+    model: "claude-sonnet-4-6",
+    preferences: ["Include Examples", "Structured Format"],
     systemPrompt:
       "You are a creative writing assistant specializing in short fiction and narrative prose. Help users develop compelling characters, vivid settings, and engaging plots. Lean into sensory detail and subtext. Avoid clichés and purple prose. When asked to generate a passage, match the tone and style the user has established.",
     tokenCount: 275,
@@ -39,6 +54,8 @@ const MOCK_PROMPTS = [
   },
   {
     id: "P-185",
+    model: "gpt-4o",
+    preferences: ["Technical Detail", "Use Code Snippets", "Be Thorough"],
     systemPrompt:
       "You are a rigorous code reviewer with expertise in TypeScript, React, and distributed systems. When reviewing code, prioritize correctness, then performance, then readability. Call out potential race conditions, memory leaks, and type-safety gaps. Be specific — reference line numbers and suggest concrete fixes, not just abstract principles.",
     tokenCount: 342,
@@ -48,24 +65,67 @@ const MOCK_PROMPTS = [
   },
 ];
 
-function PromptCard({ prompt, isFavorited, onToggleFavorite }) {
+function PromptCard({
+  prompt,
+  isFavorited,
+  onToggleFavorite,
+  lockedPreferences,
+  onAddPreference,
+}) {
   return (
     <div className="flex flex-col gap-3 bg-surface-high border border-outline rounded-lg p-3 flex-1 min-w-0">
-      <div className="flex items-center justify-between">
-        <span className="subheading bg-surface-highest px-2 py-0.5 rounded-md text-sm">
-          {prompt.id}
-        </span>
-        <button
-          onClick={onToggleFavorite}
-          className={`text-lg leading-none transition-colors ${
-            isFavorited
-              ? "text-primary-highlight"
-              : "text-neutral-text opacity-40 hover:opacity-80"
-          }`}
-          title={isFavorited ? "Unfavorite" : "Favorite"}
-        >
-          {isFavorited ? "★" : "☆"}
-        </button>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="subheading bg-surface-highest px-2 py-0.5 rounded-md text-sm">
+            {prompt.id}
+          </span>
+          <div className="flex items-center gap-2">
+            {prompt.model && (
+              <span className="bg-surface-base border border-outline text-neutral-text text-xs px-2 py-0.5 rounded-md">
+                {prompt.model}
+              </span>
+            )}
+            <button
+              onClick={onToggleFavorite}
+              className={`text-lg leading-none transition-colors ${
+                isFavorited
+                  ? "text-primary-highlight"
+                  : "text-neutral-text opacity-40 hover:opacity-80"
+              }`}
+              title={isFavorited ? "Unfavorite" : "Favorite"}
+            >
+              {isFavorited ? "★" : "☆"}
+            </button>
+          </div>
+        </div>
+        {prompt.preferences?.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {prompt.preferences.map((pref) => {
+              const isLocked = lockedPreferences?.includes(pref);
+              return (
+                <span
+                  key={pref}
+                  className={`rounded-full pl-2.5 pr-1.5 py-0.5 text-xs flex items-center gap-1 ${CHIP_COLORS[chipColorIndex(pref)]}`}
+                >
+                  {pref}
+                  <button
+                    onClick={() => !isLocked && onAddPreference?.(pref)}
+                    className={`leading-none transition-opacity ${
+                      isLocked
+                        ? "opacity-60 cursor-default"
+                        : "hover:opacity-70 cursor-pointer"
+                    }`}
+                    title={
+                      isLocked ? "Already locked" : "Add to locked preferences"
+                    }
+                  >
+                    {isLocked ? "✓" : "+"}
+                  </button>
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <div>
@@ -95,7 +155,7 @@ function PromptCard({ prompt, isFavorited, onToggleFavorite }) {
   );
 }
 
-export default function PromptArena() {
+export default function PromptArena({ lockedPreferences, onAddPreference }) {
   const [favorites, setFavorites] = useState(new Set());
   const [preference, setPreference] = useState(null);
   const [feedback, setFeedback] = useState("");
@@ -126,11 +186,15 @@ export default function PromptArena() {
           prompt={MOCK_PROMPTS[0]}
           isFavorited={favorites.has(MOCK_PROMPTS[0].id)}
           onToggleFavorite={() => toggleFavorite(MOCK_PROMPTS[0].id)}
+          lockedPreferences={lockedPreferences}
+          onAddPreference={onAddPreference}
         />
         <PromptCard
           prompt={MOCK_PROMPTS[1]}
           isFavorited={favorites.has(MOCK_PROMPTS[1].id)}
           onToggleFavorite={() => toggleFavorite(MOCK_PROMPTS[1].id)}
+          lockedPreferences={lockedPreferences}
+          onAddPreference={onAddPreference}
         />
       </div>
 

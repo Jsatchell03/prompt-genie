@@ -5,10 +5,20 @@ import PromptRankings from "./PromptRankings";
 
 export default function CurrentGeneration({ isPanelOpen, togglePanel }) {
   const [activePanel, setActivePanel] = useState("config");
+  const [lockedPreferences, setLockedPreferences] = useState([]);
+
+  function addLockedPreference(pref) {
+    const trimmed = pref.trim();
+    if (!trimmed || lockedPreferences.includes(trimmed)) return;
+    setLockedPreferences([...lockedPreferences, trimmed]);
+  }
 
   return (
     <>
-      <PromptArena />
+      <PromptArena
+        lockedPreferences={lockedPreferences}
+        onAddPreference={addLockedPreference}
+      />
       <div className="bg-surface-high border-l-1 border-outline h-[calc(100vh-64px)] flex flex-col min-h-0">
         <div className="flex items-center mt-2 px-2 pb-2 border-b-1 border-outline bg-surface-high">
           <button
@@ -39,7 +49,9 @@ export default function CurrentGeneration({ isPanelOpen, togglePanel }) {
                         : " text-neutral-text")
                     }
                   >
-                    {panel === "config" ? "Settings" : "Current Rankings"}
+                    {panel === "config"
+                      ? "Project Settings"
+                      : "Current Rankings"}
                   </h3>
                 </div>
               ))}
@@ -48,7 +60,10 @@ export default function CurrentGeneration({ isPanelOpen, togglePanel }) {
         </div>
         {isPanelOpen &&
           (activePanel === "config" ? (
-            <GenerationConfig />
+            <GenerationConfig
+              preferences={lockedPreferences}
+              onPreferencesChange={setLockedPreferences}
+            />
           ) : (
             <PromptRankings />
           ))}
