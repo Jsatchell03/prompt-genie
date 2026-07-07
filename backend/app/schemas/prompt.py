@@ -11,6 +11,8 @@ class PromptRun(BaseModel):
 
 
 class PromptResponse(BaseModel):
+    prompt_id: str
+    name: str
     system_prompt: str
     user_prompt: str
     model: str
