@@ -3,6 +3,19 @@ const SCREENS = Object.freeze({
   EVOLUTION_GRAPH: "Evolution Graph",
 });
 
+const MODELS = [
+  "qwen-3-7-max",
+  "qwen-3-7-plus",
+  "qwen-3-6-flash",
+  "qwen-3-6-plus",
+  "gpt-5-6-sol",
+  "gpt-5-6-terra",
+  "gpt-5-6-luna",
+  "claude-fable-5",
+  "claude-opus-4-8",
+  "claude-haiku-4-5",
+];
+
 const PREFERENCE_OPTIONS = [
   "Concise Outputs",
   "Professional Tone",
@@ -34,5 +47,5 @@ const CHIP_COLORS = [
   "bg-orange-500/20 text-orange-300 border border-orange-500/30",
 ];
 
-export { PREFERENCE_OPTIONS, CHIP_COLORS };
+export { PREFERENCE_OPTIONS, CHIP_COLORS, MODELS };
 export default SCREENS;

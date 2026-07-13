@@ -2,93 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import LongInput from "./LongInput";
 import SearchableDropdown from "./SearchableDropdown";
 import OutputPreferences from "./OutputPreferences";
-
-const LLMModels = [
-  // OpenAI
-  "GPT-5",
-  "GPT-5 Mini",
-  "GPT-5 Nano",
-  "GPT-4.1",
-  "GPT-4.1 Mini",
-  "GPT-4.1 Nano",
-  "o3",
-  "o3 Pro",
-  "o4-mini",
-
-  // Anthropic
-  "Claude Opus 4",
-  "Claude Sonnet 4",
-  "Claude Haiku 4",
-
-  // Google
-  "Gemini 2.5 Pro",
-  "Gemini 2.5 Flash",
-  "Gemini 2.5 Flash-Lite",
-
-  // Meta
-  "Llama 4 Maverick",
-  "Llama 4 Scout",
-  "Llama 3.3 70B",
-  "Llama 3.1 405B",
-  "Llama 3.1 70B",
-  "Llama 3.1 8B",
-
-  // Mistral AI
-  "Magistral",
-  "Mistral Large",
-  "Mistral Medium",
-  "Mistral Small",
-  "Codestral",
-  "Pixtral Large",
-
-  // xAI
-  "Grok 4",
-  "Grok 3",
-
-  // DeepSeek
-  "DeepSeek R1",
-  "DeepSeek V3",
-
-  // Alibaba
-  "Qwen3 235B",
-  "Qwen3 32B",
-  "Qwen3 14B",
-  "Qwen3 8B",
-
-  // Cohere
-  "Command A",
-  "Command R+",
-  "Command R",
-
-  // AI21
-  "Jamba Large",
-  "Jamba Mini",
-
-  // Microsoft
-  "Phi-4",
-  "Phi-4 Mini",
-
-  // Amazon
-  "Nova Premier",
-  "Nova Pro",
-  "Nova Lite",
-  "Nova Micro",
-
-  // IBM
-  "Granite 4.0",
-
-  // Moonshot AI
-  "Kimi K2",
-
-  // Tencent
-  "Hunyuan Turbo S",
-
-  // Zhipu AI
-  "GLM-4.5",
-
-  // 01.AI
-  "Yi Large",
-];
+import { MODELS } from "../Constants";
 
 export default function GenerationConfig({ preferences, onPreferencesChange }) {
   const [goal, setGoal] = useState("");
@@ -158,7 +72,7 @@ export default function GenerationConfig({ preferences, onPreferencesChange }) {
             <div className="mb-3">
               <SearchableDropdown
                 inline
-                options={LLMModels.filter((m) => !models.includes(m))}
+                options={MODELS.filter((m) => !models.includes(m))}
                 onChange={addModel}
                 placeholder="Search models..."
                 bgColor="bg-surface-highest"
