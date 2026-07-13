@@ -18,7 +18,11 @@ class PromptResponse(BaseModel):
     model: str
     preferences: list[str]
     output: str
-    generation_time: int
+    generation_time: float
     input_tokens: int
     output_tokens: int
-    cost: int
+    cost: float
+
+
+class PromptRanking(PromptResponse):
+    ranking: int
